@@ -1,27 +1,46 @@
-function checkCookie() {
-    let lastVisit = document.cookie.replace(/(?:(?:^|.*;\s*)lastVisit\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-    let now = new Date().toLocaleString();
+$(document).ready(function() {
+    
+    // 1. Digital Clock
+    setInterval(() => {
+        $('#digital-clock').text("Digital Time: " + new Date().toLocaleTimeString());
+    }, 1000);
 
-    if (lastVisit === "") {
-        alert("Welcome to my homepage for the first time!");
-    } else {
-        alert("Welcome back! Your last visit was " + lastVisit);
-    }
-    document.cookie = "lastVisit=" + now + "; path=/; max-age=31536000";
-}
-
-checkCookie();
-
-function fetchJoke() {
-    $.ajax({
-        url: "https://v2.jokeapi.dev/joke/Any",
-        success: function(result) {
-            let jokeText = result.type === "single" ? result.joke : result.setup + " ... " + result.delivery;
-            $('#joke-container').text(jokeText);
-        }
+    // 2. Show/Hide Email
+    $('#show-email-btn').click(function() {
+        $('#email-address').toggle();
     });
-}
 
-// Refresh joke every 60 seconds
-setInterval(fetchJoke, 60000);
-fetchJoke(); // Call immediately
+    // 3. Joke API Integration
+    function fetchJoke() {
+        $.ajax({
+            url: "https://v2.jokeapi.dev/joke/Any",
+            success: (data) => {
+                let joke = data.type === "single" ? data.joke : `${data.setup} ... ${data.delivery}`;
+                $('#joke-container').text(joke);
+            },
+            error: () => {
+                $('#joke-container').text("Could not load a joke right now.");
+            }
+        });
+    }
+    
+    // Set interval and initial call
+    setInterval(fetchJoke, 60000); 
+    fetchJoke();
+
+    // 4. Cookie Logic
+    function checkCookie() {
+        let lastVisit = document.cookie.replace(/(?:(?:^|.*;\s*)lastVisit\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        let now = new Date().toLocaleString();
+
+        if (!lastVisit) {
+            alert("Welcome to my homepage for the first time!");
+        } else {
+            alert("Welcome back! Your last visit was " + lastVisit);
+        }
+        // Set the cookie to expire in 1 year (31536000 seconds)
+        document.cookie = `lastVisit=${now}; path=/; max-age=31536000`;
+    }
+    
+    checkCookie();
+});

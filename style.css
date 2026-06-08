@@ -1,0 +1,23 @@
+body {
+    padding-top: 20px;
+    line-height: 1.6;
+}
+
+#dashboard {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.clock {
+    font-family: monospace;
+    font-size: 1.2rem;
+    color: #007bff;
+}
+
+#joke-container {
+    font-style: italic;
+    margin-top: 10px;
+    padding: 10px;
+    border-left: 3px solid #007bff;
+}
