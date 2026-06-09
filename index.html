@@ -20,18 +20,30 @@
 
     <div class="container mt-5">
         <header class="text-center">
-            <img src="your-photo.jpg" alt="Aiden Ward" class="rounded-circle" width="150" height="150">
+            <img src="headshot.jpeg" alt="Aiden Ward" class="rounded-circle" width="150" height="150">
             <h1>Aiden Ward</h1>
             <p>Data Science/AI Engineer Intern | Computer Science Student @ University of Cincinnati</p>
         </header>
 
         <section id="experience" class="mt-4">
             <h2>Experience</h2>
-            <ul>
-                <li><strong>New York Life:</strong> Data Science/AI Engineer Intern</li>
-                <li><strong>Amend Consulting:</strong> Data Engineer Intern</li>
-                <li><strong>Kenvue:</strong> Data Science Intern</li>
-                <li><strong>North Allegheny:</strong> Software Engineering Intern</li>
+            <ul class="list-unstyled">
+                <li class="d-flex align-items-center mb-3">
+                    <img src="newyorklife.png" class="company-logo" alt="NYL">
+                    <strong>New York Life:</strong> Data Science/AI Engineer Intern
+                </li>
+                <li class="d-flex align-items-center mb-3">
+                    <img src="amend.jpeg" class="company-logo" alt="Amend">
+                    <strong>Amend Consulting:</strong> Data Engineer Intern
+                </li>
+                <li class="d-flex align-items-center mb-3">
+                    <img src="kenvue.png" class="company-logo" alt="Kenvue">
+                    <strong>Kenvue:</strong> Data Science Intern
+                </li>
+                <li class="d-flex align-items-center mb-3">
+                    <img src="na.jpeg" class="company-logo" alt="NA">
+                    <strong>North Allegheny:</strong> Software Engineering Intern
+                </li>
             </ul>
         </section>
 
@@ -42,7 +54,8 @@
 
         <section id="dashboard" class="container mt-4 p-4 border rounded">
             <h3>Project Dashboard</h3>
-            <div id="digital-clock" class="clock">Loading time...</div>
+            <div id="digital-clock" class="clock"></div>
+            <div id="analog-clock" class="analog-clock mt-2"></div>
             
             <div class="mt-3">
                 <button id="show-email-btn" class="btn btn-outline-primary btn-sm">Show Contact Info</button>
