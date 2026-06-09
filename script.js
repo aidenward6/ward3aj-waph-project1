@@ -1,28 +1,62 @@
 $(document).ready(function() {
-    
     setInterval(() => {
         $('#digital-clock').text(new Date().toLocaleTimeString());
     }, 1000);
 
-    function updateAnalogClock() {
-        const now = new Date();
-        const sec = now.getSeconds();
-        const min = now.getMinutes();
-        const hour = now.getHours();
+    function drawAnalogClock() {
+        const canvas = document.getElementById("analog-canvas");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        let radius = canvas.height / 2;
+        ctx.translate(radius, radius);
+        radius = radius * 0.90;
 
-        const secDeg = sec * 6; // 360 / 60
-        const minDeg = min * 6 + (sec * 0.1);
-        const hourDeg = (hour % 12) * 30 + (min * 0.5);
+        function draw() {
+            ctx.beginPath();
+            ctx.arc(0, 0, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = $('#main-body').hasClass('dark-mode') ? '#333' : 'white';
+            ctx.fill();
+            ctx.strokeStyle = $('#main-body').hasClass('dark-mode') ? '#fff' : '#333';
+            ctx.lineWidth = 4;
+            ctx.stroke();
 
-        $('#sec-hand').css('transform', `rotate(${secDeg}deg)`);
-        $('#min-hand').css('transform', `rotate(${minDeg}deg)`);
-        $('#hour-hand').css('transform', `rotate(${hourDeg}deg)`);
+            const now = new Date();
+            let hour = now.getHours() % 12;
+            let minute = now.getMinutes();
+            let second = now.getSeconds();
+
+            hour = (hour*Math.PI/6) + (minute*Math.PI/(6*60)) + (second*Math.PI/(360*60));
+            drawHand(ctx, hour, radius*0.5, 4);
+            
+            minute = (minute*Math.PI/30) + (second*Math.PI/(30*60));
+            drawHand(ctx, minute, radius*0.8, 3);
+            
+            second = (second*Math.PI/30);
+            drawHand(ctx, second, radius*0.9, 1, 'red');
+        }
+
+        function drawHand(ctx, pos, length, width, color) {
+            ctx.beginPath();
+            ctx.lineWidth = width;
+            ctx.lineCap = "round";
+            ctx.strokeStyle = color || ($('#main-body').hasClass('dark-mode') ? '#fff' : '#333');
+            ctx.moveTo(0,0);
+            ctx.rotate(pos);
+            ctx.lineTo(0, -length);
+            ctx.stroke();
+            ctx.rotate(-pos);
+        }
+        setInterval(draw, 1000);
+        draw();
     }
-    setInterval(updateAnalogClock, 1000);
-    updateAnalogClock(); 
+    drawAnalogClock();
 
     $('#show-email-btn').click(function() {
         $('#email-address').toggle();
+    });
+
+    $('#dark-mode-btn').click(function() {
+        $('#main-body').toggleClass('dark-mode');
     });
 
     function fetchJoke() {
@@ -33,7 +67,7 @@ $(document).ready(function() {
                 $('#joke-container').text(joke);
             },
             error: () => {
-                $('#joke-container').text("Could not load a joke right now.");
+                $('#joke-container').text("API Error: Joke failed to load. (Disable adblocker if present)");
             }
         });
     }
@@ -51,7 +85,7 @@ $(document).ready(function() {
     fetchDog();
 
     function checkCookie() {
-        let lastVisit = document.cookie.replace(/(?:(?:^|.*;\s*)lastVisit\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        let lastVisit = Cookies.get('lastVisit');
         let now = new Date().toLocaleString();
 
         if (!lastVisit) {
@@ -59,9 +93,7 @@ $(document).ready(function() {
         } else {
             alert("Welcome back! Your last visit was " + lastVisit);
         }
-        document.cookie = `lastVisit=${now}; path=/; max-age=31536000`;
+        Cookies.set('lastVisit', now, { expires: 365, path: '/' });
     }
-    
-    // Slight timeout ensures the DOM loads before the alert blocks the screen
     setTimeout(checkCookie, 500); 
 });
