@@ -1,25 +1,30 @@
 $(document).ready(function() {
     
-    // 1. Digital Clock
     setInterval(() => {
-        $('#digital-clock').text("Digital Time: " + new Date().toLocaleTimeString());
+        $('#digital-clock').text(new Date().toLocaleTimeString());
     }, 1000);
 
-    // 2. Analog Clock (Requirement Satisfaction)
     function updateAnalogClock() {
         const now = new Date();
-        const seconds = now.getSeconds();
-        // Visual rotation for the second hand
-        $('#analog-clock').css('transform', `rotate(${seconds * 6}deg)`);
+        const sec = now.getSeconds();
+        const min = now.getMinutes();
+        const hour = now.getHours();
+
+        const secDeg = sec * 6; // 360 / 60
+        const minDeg = min * 6 + (sec * 0.1);
+        const hourDeg = (hour % 12) * 30 + (min * 0.5);
+
+        $('#sec-hand').css('transform', `rotate(${secDeg}deg)`);
+        $('#min-hand').css('transform', `rotate(${minDeg}deg)`);
+        $('#hour-hand').css('transform', `rotate(${hourDeg}deg)`);
     }
     setInterval(updateAnalogClock, 1000);
+    updateAnalogClock(); 
 
-    // 3. Show/Hide Email
     $('#show-email-btn').click(function() {
         $('#email-address').toggle();
     });
 
-    // 4. Joke API Integration
     function fetchJoke() {
         $.ajax({
             url: "https://v2.jokeapi.dev/joke/Any",
@@ -35,7 +40,6 @@ $(document).ready(function() {
     setInterval(fetchJoke, 60000); 
     fetchJoke();
 
-    // 5. Dog Image API Integration
     function fetchDog() {
         $.ajax({
             url: "https://dog.ceo/api/breeds/image/random",
@@ -46,7 +50,6 @@ $(document).ready(function() {
     }
     fetchDog();
 
-    // 6. Cookie Logic
     function checkCookie() {
         let lastVisit = document.cookie.replace(/(?:(?:^|.*;\s*)lastVisit\s*\=\s*([^;]*).*$)|^.*$/, "$1");
         let now = new Date().toLocaleString();
@@ -58,5 +61,7 @@ $(document).ready(function() {
         }
         document.cookie = `lastVisit=${now}; path=/; max-age=31536000`;
     }
-    checkCookie();
+    
+    // Slight timeout ensures the DOM loads before the alert blocks the screen
+    setTimeout(checkCookie, 500); 
 });
