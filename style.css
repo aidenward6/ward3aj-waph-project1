@@ -1,21 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+/* 1. Double-import backup */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+/* 2. Absolute Font Override: Strips Bootstrap of default fonts */
+:root {
+    --bs-body-font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+    --bs-heading-font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+}
+
+html, body, div, span, h1, h2, h3, h4, h5, h6, p, a, strong, li, button {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+}
 
 body {
-    font-family: 'Inter', sans-serif !important;
     padding-top: 20px;
     padding-bottom: 50px;
     transition: background-color 0.3s, color 0.3s;
 }
 
+/* Specific sizing to lock logos in place */
 .company-logo {
     width: 40px !important;
     height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
     object-fit: contain !important;
     margin-right: 15px;
     background-color: white;
     border-radius: 4px;
 }
 
+/* Dark Mode Logic */
 .dark-mode {
     background-color: #1a1a1a !important;
     color: #f1f1f1 !important;
@@ -30,4 +44,3 @@ body {
 .dark-mode .text-muted {
     color: #aaa !important;
 }
-

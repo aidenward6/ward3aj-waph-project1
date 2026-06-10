@@ -1,8 +1,11 @@
 $(document).ready(function() {
+    
+    // Digital Clock
     setInterval(() => {
         $('#digital-clock').text(new Date().toLocaleTimeString());
     }, 1000);
 
+    // Canvas Analog Clock
     function drawAnalogClock() {
         const canvas = document.getElementById("analog-canvas");
         if (!canvas) return;
@@ -51,14 +54,17 @@ $(document).ready(function() {
     }
     drawAnalogClock();
 
+    // Show/Hide Email
     $('#show-email-btn').click(function() {
         $('#email-address').toggle();
     });
 
+    // Dark Mode Toggle
     $('#dark-mode-btn').click(function() {
         $('#main-body').toggleClass('dark-mode');
     });
 
+    // Joke API
     function fetchJoke() {
         $.ajax({
             url: "https://v2.jokeapi.dev/joke/Any",
@@ -67,13 +73,14 @@ $(document).ready(function() {
                 $('#joke-container').text(joke);
             },
             error: () => {
-                $('#joke-container').text("API Error: Joke failed to load. (Disable adblocker if present)");
+                $('#joke-container').text("API Error: Joke failed to load.");
             }
         });
     }
     setInterval(fetchJoke, 60000); 
     fetchJoke();
 
+    // Dog Image API
     function fetchDog() {
         $.ajax({
             url: "https://dog.ceo/api/breeds/image/random",
@@ -84,6 +91,7 @@ $(document).ready(function() {
     }
     fetchDog();
 
+    // js-cookie Logic
     function checkCookie() {
         let lastVisit = Cookies.get('lastVisit');
         let now = new Date().toLocaleString();
