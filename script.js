@@ -1,11 +1,8 @@
 $(document).ready(function() {
-    
-    // Digital Clock
     setInterval(() => {
         $('#digital-clock').text(new Date().toLocaleTimeString());
     }, 1000);
 
-    // Canvas Analog Clock
     function drawAnalogClock() {
         const canvas = document.getElementById("analog-canvas");
         if (!canvas) return;
@@ -30,10 +27,8 @@ $(document).ready(function() {
 
             hour = (hour*Math.PI/6) + (minute*Math.PI/(6*60)) + (second*Math.PI/(360*60));
             drawHand(ctx, hour, radius*0.5, 4);
-            
             minute = (minute*Math.PI/30) + (second*Math.PI/(30*60));
             drawHand(ctx, minute, radius*0.8, 3);
-            
             second = (second*Math.PI/30);
             drawHand(ctx, second, radius*0.9, 1, 'red');
         }
@@ -54,17 +49,14 @@ $(document).ready(function() {
     }
     drawAnalogClock();
 
-    // Show/Hide Email
     $('#show-email-btn').click(function() {
         $('#email-address').toggle();
     });
 
-    // Dark Mode Toggle
     $('#dark-mode-btn').click(function() {
         $('#main-body').toggleClass('dark-mode');
     });
 
-    // Joke API
     function fetchJoke() {
         $.ajax({
             url: "https://v2.jokeapi.dev/joke/Any",
@@ -73,14 +65,13 @@ $(document).ready(function() {
                 $('#joke-container').text(joke);
             },
             error: () => {
-                $('#joke-container').text("API Error: Joke failed to load.");
+                $('#joke-container').text("API Error.");
             }
         });
     }
     setInterval(fetchJoke, 60000); 
     fetchJoke();
 
-    // Dog Image API
     function fetchDog() {
         $.ajax({
             url: "https://dog.ceo/api/breeds/image/random",
@@ -91,11 +82,9 @@ $(document).ready(function() {
     }
     fetchDog();
 
-    // js-cookie Logic
     function checkCookie() {
         let lastVisit = Cookies.get('lastVisit');
         let now = new Date().toLocaleString();
-
         if (!lastVisit) {
             alert("Welcome to my homepage for the first time!");
         } else {
